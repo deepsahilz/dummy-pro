@@ -15,7 +15,7 @@ const App = () => {
 
   return (
     <div className="app-container font-nb">
-      <h1 className='text-4xl font-rejouice font-semibold mb-2'>To-Do Pankaj</h1>
+      <h1 className='text-4xl font-rejouice font-semibold mb-2'>To Do Pankaj</h1>
       <AddToDoForm setTodos={setTodos} />
       <ToDoList todos={todos} setTodos={setTodos} />
     </div>
