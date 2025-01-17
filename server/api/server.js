@@ -33,7 +33,7 @@ app.get('/todos', async (req, res) => {
   }
 });
 app.get('/', async (req, res) => {
-  res.json("hello");
+  res.send("hello");
 });
 
 // Add a new to-do
