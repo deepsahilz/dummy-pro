@@ -6,7 +6,7 @@ const App = () => {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    // Fetch todos from backend (dummy fetch for now)
+    // Fetch todos from backend
     fetch('https://todopankaj-server.vercel.app/todos')
       .then((res) => res.json())
       .then((data) => setTodos(data))
@@ -15,9 +15,13 @@ const App = () => {
 
   return (
     <div className="app-container font-nb">
-      <h1 className='text-4xl font-rejouice font-semibold mb-2'>To Do Pankaj</h1>
+      <h1 className="text-4xl font-rejouice font-semibold mb-2">To Do Pankaj</h1>
       <AddToDoForm setTodos={setTodos} />
-      <ToDoList todos={todos} setTodos={setTodos} />
+      {todos.length === 0 ? (
+        <h1 className="text-xl font-medium mt-4">No todos yet</h1>
+      ) : (
+        <ToDoList todos={todos} setTodos={setTodos} />
+      )}
     </div>
   );
 };
