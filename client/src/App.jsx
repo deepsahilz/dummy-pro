@@ -7,7 +7,7 @@ const App = () => {
 
   useEffect(() => {
     // Fetch todos from backend (dummy fetch for now)
-    fetch('https://todopankaj.vercel.app/todos')
+    fetch('https://todopankaj-server.vercel.app/todos')
       .then((res) => res.json())
       .then((data) => setTodos(data))
       .catch((err) => console.error(err));
