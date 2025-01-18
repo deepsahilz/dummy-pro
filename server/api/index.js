@@ -2,7 +2,7 @@ import express from 'express';
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import serverless from 'serverless-http';
+// import serverless from 'serverless-http';
 
 dotenv.config();
 
@@ -71,8 +71,8 @@ app.delete('/todos/:id', async (req, res) => {
 });
 
 // Start the server
-// app.listen(PORT, () => {
-//   console.log(`Server is running on http://localhost:${PORT}`);
-// });
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
 
-export default serverless(app);
+export default app;
