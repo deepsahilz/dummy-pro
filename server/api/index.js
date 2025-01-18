@@ -32,6 +32,7 @@ app.get('/todos', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch todos' });
   }
 });
+
 app.get('/', async (req, res) => {
   res.send("hello");
 });
