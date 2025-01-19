@@ -96,7 +96,7 @@ app.post('/todos', async (req, res) => {
         MONGO_URI, // Exposing URI (for debugging purposes)
         MONGO_URI, // Exposing URI (for debugging purposes)
         DB_NAME, // Exposing DB name (for debugging purposes)
-      });
+      });}
 
     // Step 2: Prepare the new todo
     const newTodo = { title, status: !!status, createdAt: new Date() };
