@@ -26,7 +26,13 @@ MongoClient.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true
   });
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+  origin: 'https://todopankaj.vercel.app', // Replace with your frontend domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type'],
+};
+
+app.use(cors(corsOptions)); // Use CORS middleware with the specified options
 app.use(express.json());
 
 // Helper function to handle errors
