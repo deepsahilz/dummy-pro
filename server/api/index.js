@@ -53,21 +53,18 @@ app.get('/todos', async (req, res) => {
 });
 
 // Add a new to-do
-app.post('/todos', async (req, res) => {
-  const { title } = req.body;
-
-  if (!title) {
-    return res.status(400).json({ error: 'Title is required' });
-  }
-
+app.get('/todos', async (req, res) => {
   try {
-    const result = await db.collection('todos').insertOne({ title, status: 'pending' });
-    if (!result.insertedId) {
-      return res.status(500).json({ error: 'Failed to insert to-do' });
+    // Ensure the database object exists
+    if (!db) {
+      throw new Error('Database connection is not initialized');
     }
-    res.json({ id: result.insertedId, title, status: 'pending' });
+
+    const todos = await db.collection('todos').find().toArray();
+    res.json(todos);
   } catch (err) {
-    handleError(res, err, 500, 'Failed to add to-do');
+    console.error('Error fetching todos:', err.message); // Log the error for debugging
+    res.status(500).json({ error: 'Failed to fetch todos', details: err.message });
   }
 });
 
