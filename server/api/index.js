@@ -76,19 +76,45 @@ app.post('/todos', async (req, res) => {
   }
 
   try {
+    // Step 1: Check if db is initialized
+    if (!db) {
+      return res.status(500).json({
+        error: 'Database connection not initialized',
+        step: 'Database Initialization Check',
+      });
+    }
 
-    const newTodo = { title, status, createdAt: new Date() };
+    // Step 2: Prepare the new todo
+    const newTodo = { title, status: !!status, createdAt: new Date() };
+
+    // Step 3: Insert the todo into the database
     const result = await db.collection('todos').insertOne(newTodo);
-    
+
+    // Step 4: Check if insertion was successful
+    if (!result.insertedId) {
+      return res.status(500).json({
+        error: 'Failed to insert todo into database',
+        step: 'Database Insertion',
+        details: result,
+      });
+    }
+
+    // Step 5: Send a success response
     res.status(201).json({
       message: 'Todo added successfully',
       todo: { _id: result.insertedId, ...newTodo },
     });
   } catch (err) {
-    // res.send("nothing");
-    handleError(res, err, 500, 'Failed to add todo bro');
+    // Step 6: Send detailed error response
+    res.status(500).json({
+      error: 'An unexpected error occurred',
+      step: 'Catch Block',
+      message: err.message,
+      stack: err.stack, // Include the stack trace for debugging
+    });
   }
 });
+
 
 // Delete a to-do
 app.delete('/todos/:id', async (req, res) => {
