@@ -85,8 +85,8 @@ app.post('/todos', async (req, res) => {
       todo: { _id: result.insertedId, ...newTodo },
     });
   } catch (err) {
-    res.send("nothing");
-    // handleError(res, err, 500, 'Failed to add todo bro');
+    // res.send("nothing");
+    handleError(res, err, 500, 'Failed to add todo bro');
   }
 });
 
