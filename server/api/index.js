@@ -23,16 +23,22 @@ MongoClient.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true
 
 
   const ensureDbConnected = (req, res, next) => {
-  if (!db) {
-    return res.status(500).json({
-      error: 'Database connection not initialized',
-      pro: "ohoh",  // Temporary debug info
-      mongouri: MONGO_URI, // Exposing URI (for debugging purposes)
-      dbname: DB_NAME, // Exposing DB name (for debugging purposes)
-    });
-  }
-  next();
-};
+    if (!db) {
+      return res.status(500).json({ error: 'Database connection not initialized' });
+    }
+    next();
+  };
+  // const ensureDbConnected = (req, res, next) => {
+  //   if (!db) {
+  //     return res.status(500).json({
+  //       error: 'Database connection not initialized',
+  //       pro: "ohoh",  // Temporary debug info
+  //       mongouri: MONGO_URI, // Exposing URI (for debugging purposes)
+  //       dbname: DB_NAME, // Exposing DB name (for debugging purposes)
+  //     });
+  //   }
+  //   next();
+  // };
   
   // Apply the middleware to routes that require DB
   app.use('/todos', ensureDbConnected);
