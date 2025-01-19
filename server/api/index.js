@@ -88,12 +88,15 @@ app.post('/todos', async (req, res) => {
 
   try {
     // Step 1: Check if db is initialized
+
     if (!db) {
       return res.status(500).json({
         error: 'Database connection not initialized',
-        step: 'Database Initialization Check',
+
+        MONGO_URI, // Exposing URI (for debugging purposes)
+        MONGO_URI, // Exposing URI (for debugging purposes)
+        DB_NAME, // Exposing DB name (for debugging purposes)
       });
-    }
 
     // Step 2: Prepare the new todo
     const newTodo = { title, status: !!status, createdAt: new Date() };
