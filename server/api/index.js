@@ -7,17 +7,22 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI;
 let db;
+const MONGO_URI = process.env.MONGO_URI;
 
-// MongoDB connection
-MongoClient.connect(MONGO_URI)
+if (!MONGO_URI) {
+  console.error("MongoDB URI is undefined. Please check your environment variables.");
+  process.exit(1); // Exit the process with an error
+}
+
+MongoClient.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then((client) => {
     console.log('Connected to MongoDB');
     db = client.db(process.env.DB_NAME); // Set the database
   })
   .catch((err) => {
     console.error('Failed to connect to MongoDB', err);
+    process.exit(1); // Exit the process if MongoDB connection fails
   });
 
 // Middleware
