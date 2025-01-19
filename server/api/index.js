@@ -24,8 +24,12 @@ MongoClient.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true
 
   const ensureDbConnected = (req, res, next) => {
     if (!db) {
-      return res.status(500).json({ error: 'Database connection not initialized' });
-    }
+      return res.status(500).json({
+        error: 'Database connection not initialized2',
+        pro:"ohoh",
+        mongouri: MONGO_URI, // Exposing URI (for debugging purposes)
+        dbname:DB_NAME, // Exposing DB name (for debugging purposes)
+      });}
     next();
   };
   
@@ -88,14 +92,13 @@ app.post('/todos', async (req, res) => {
 
   try {
     // Step 1: Check if db is initialized
-
     if (!db) {
       return res.status(500).json({
-        error: 'Database connection not initialized2',
-        pro:"ohoh",
-        mongouri: MONGO_URI, // Exposing URI (for debugging purposes)
-        dbname:DB_NAME, // Exposing DB name (for debugging purposes)
-      });}
+        error: 'Database connection not initialized',
+        step: 'Database Initialization Check',
+      });
+    }
+    
 
     // Step 2: Prepare the new todo
     const newTodo = { title, status: !!status, createdAt: new Date() };
