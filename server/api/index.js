@@ -21,6 +21,17 @@ MongoClient.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true
     process.exit(1); // Exit the process if MongoDB connection fails
   });
 
+
+  const ensureDbConnected = (req, res, next) => {
+    if (!db) {
+      return res.status(500).json({ error: 'Database connection not initialized' });
+    }
+    next();
+  };
+  
+  // Apply the middleware to routes that require DB
+  app.use('/todos', ensureDbConnected);
+
 // Middleware
 const corsOptions = {
   origin: 'https://todopankaj.vercel.app', // Replace with your frontend domain
