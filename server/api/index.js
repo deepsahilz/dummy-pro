@@ -32,7 +32,10 @@ const handleError = (res, err, status = 500, message = 'Internal Server Error') 
 
 // Routes
 
-// Get all to-dos
+app.get('/', async (req, res) => {
+  res.send("working server")
+});
+
 app.get('/todos', async (req, res) => {
   try {
     const todos = await db.collection('todos').find().toArray();
