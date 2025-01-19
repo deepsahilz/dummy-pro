@@ -1,73 +1,109 @@
 import express from 'express';
-import mysql from 'mysql2/promise';
+import { MongoClient, ObjectId } from 'mongodb'; // Import ObjectId
 import dotenv from 'dotenv';
 import cors from 'cors';
-// import serverless from 'serverless-http';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const MONGO_URI = process.env.MONGO_URI;
+let db;
 
-// MySQL Connection
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
+// MongoDB connection
+MongoClient.connect(MONGO_URI)
+  .then((client) => {
+    console.log('Connected to MongoDB');
+    db = client.db(process.env.DB_NAME); // Set the database
+  })
+  .catch((err) => {
+    console.error('Failed to connect to MongoDB', err);
+  });
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Helper function to handle errors
+const handleError = (res, err, status = 500, message = 'Internal Server Error') => {
+  console.error(err);
+  res.status(status).json({ error: message });
+};
 
 // Routes
 
 // Get all to-dos
 app.get('/todos', async (req, res) => {
   try {
-    const [todos] = await pool.query('SELECT * FROM todos');
+    const todos = await db.collection('todos').find().toArray();
     res.json(todos);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch todos' });
+    handleError(res, err, 500, 'Failed to fetch todos');
   }
-});
-
-app.get('/', async (req, res) => {
-  res.send("hello");
 });
 
 // Add a new to-do
 app.post('/todos', async (req, res) => {
+  const { title } = req.body;
+
+  if (!title) {
+    return res.status(400).json({ error: 'Title is required' });
+  }
+
   try {
-    const { title } = req.body;
-    const [result] = await pool.query('INSERT INTO todos (title) VALUES (?)', [title]);
-    res.json({ id: result.insertId, title, status: 'pending' });
+    const result = await db.collection('todos').insertOne({ title, status: 'pending' });
+    if (!result.insertedId) {
+      return res.status(500).json({ error: 'Failed to insert to-do' });
+    }
+    res.json({ id: result.insertedId, title, status: 'pending' });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to add to-do' });
+    handleError(res, err, 500, 'Failed to add to-do');
   }
 });
 
-// Update a to-do
+// Update a to-do (edit the title or status)
 app.put('/todos/:id', async (req, res) => {
+  const { id } = req.params;
+  const { title, status } = req.body;
+
+  if (!title && !status) {
+    return res.status(400).json({ error: 'Title or status is required' });
+  }
+
   try {
-    const { id } = req.params;
-    const { title, status } = req.body;
-    await pool.query('UPDATE todos SET title = ?, status = ? WHERE id = ?', [title, status, id]);
+    const result = await db.collection('todos').updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { title, status } }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: 'To-do not found' });
+    }
+
     res.json({ id, title, status });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to update to-do' });
+    handleError(res, err, 500, 'Failed to update to-do');
   }
 });
 
 // Delete a to-do
 app.delete('/todos/:id', async (req, res) => {
+  const todoId = req.params.id;
+
+  if (!todoId) {
+    return res.status(400).json({ error: 'Todo ID is required' });
+  }
+
   try {
-    const { id } = req.params;
-    await pool.query('DELETE FROM todos WHERE id = ?', [id]);
-    res.json({ message: 'To-do deleted successfully' });
+    const result = await db.collection('todos').deleteOne({ _id: new ObjectId(todoId) });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: 'Todo not found' });
+    }
+
+    res.status(200).json({ message: 'Todo deleted successfully' });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to delete to-do' });
+    handleError(res, err, 500, 'Failed to delete todo');
   }
 });
 
