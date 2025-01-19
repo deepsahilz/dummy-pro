@@ -24,7 +24,7 @@ MongoClient.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true
 
   const ensureDbConnected = (req, res, next) => {
     if (!db) {
-      return res.status(500).json({ error: 'Database connection not initialized' });
+      return res.status(500).json({ error: 'Database connection not initialized2',mongouri: MONGO_URI, });
     }
     next();
   };
