@@ -76,15 +76,16 @@ app.post('/todos', async (req, res) => {
   }
 
   try {
+
     const newTodo = { title, status, createdAt: new Date() };
     const result = await db.collection('todos').insertOne(newTodo);
-
+    
     res.status(201).json({
       message: 'Todo added successfully',
       todo: { _id: result.insertedId, ...newTodo },
     });
   } catch (err) {
-    handleError(res, err, 500, 'Failed to add todo');
+    handleError(res, err, 500, 'Failed to add todo bro');
   }
 });
 
