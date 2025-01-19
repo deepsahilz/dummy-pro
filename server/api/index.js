@@ -93,9 +93,8 @@ app.post('/todos', async (req, res) => {
       return res.status(500).json({
         error: 'Database connection not initialized',
 
-        MONGO_URI, // Exposing URI (for debugging purposes)
-        MONGO_URI, // Exposing URI (for debugging purposes)
-        DB_NAME, // Exposing DB name (for debugging purposes)
+        mongouri: MONGO_URI, // Exposing URI (for debugging purposes)
+        dbname:DB_NAME, // Exposing DB name (for debugging purposes)
       });}
 
     // Step 2: Prepare the new todo
