@@ -32,9 +32,9 @@ const App = () => {
     return <h1 className="text-xl font-medium mt-4">Loading...</h1>;
   }
 
-  if (error) {
-    return <h1 className="text-xl font-medium mt-4 text-red-500">{`Error: ${error}`}</h1>;
-  }
+  // if (error) {
+  //   return <h1 className="text-xl font-medium mt-4 text-red-500">{`Error: ${error}`}</h1>;
+  // }
 
   return (
     <div className="app-container font-nb">
