@@ -68,28 +68,23 @@ app.get('/todos', async (req, res) => {
   }
 });
 
-// Update a to-do (edit the title or status)
-app.put('/todos/:id', async (req, res) => {
-  const { id } = req.params;
-  const { title, status } = req.body;
+app.post('/todos', async (req, res) => {
+  const { title, status = false } = req.body;
 
-  if (!title && !status) {
-    return res.status(400).json({ error: 'Title or status is required' });
+  if (!title) {
+    return res.status(400).json({ error: 'Title is required' });
   }
 
   try {
-    const result = await db.collection('todos').updateOne(
-      { _id: new ObjectId(id) },
-      { $set: { title, status } }
-    );
+    const newTodo = { title, status, createdAt: new Date() };
+    const result = await db.collection('todos').insertOne(newTodo);
 
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ error: 'To-do not found' });
-    }
-
-    res.json({ id, title, status });
+    res.status(201).json({
+      message: 'Todo added successfully',
+      todo: { _id: result.insertedId, ...newTodo },
+    });
   } catch (err) {
-    handleError(res, err, 500, 'Failed to update to-do');
+    handleError(res, err, 500, 'Failed to add todo');
   }
 });
 
