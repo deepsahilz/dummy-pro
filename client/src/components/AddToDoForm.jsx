@@ -10,11 +10,12 @@ const AddToDoForm = ({ setTodos }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await axios.post(`${BASE_URL}/todos`, { title });
-    console.log(response.data);
+    axios
+    .post(`${BASE_URL}/todos`, { title })
+    .then((response) => {
+        console.log('New todo added yoyoo');
+    })
     try {
-      // Add new to-do to backend
-      // Ensure prevTodos is an array before updating the state
       setTodos((prevTodos) =>
         Array.isArray(prevTodos) ? [...prevTodos, response.data] : [response.data]
       );
