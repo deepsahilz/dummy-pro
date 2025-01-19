@@ -11,7 +11,7 @@ let db;
 const MONGO_URI = process.env.MONGO_URI;
 
 if (!MONGO_URI) {
-  console.error("MongoDB URI is undefined. Please check your environment variables.");
+  console.error("MongoDB URI is undefined really. Please check your environment variables.");
   process.exit(1); // Exit the process with an error
 }
 
