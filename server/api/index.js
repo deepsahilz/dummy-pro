@@ -91,8 +91,8 @@ app.post('/todos', async (req, res) => {
 
     if (!db) {
       return res.status(500).json({
-        error: 'Database connection not initialized',
-
+        error: 'Database connection not initialized2',
+        pro:"ohoh",
         mongouri: MONGO_URI, // Exposing URI (for debugging purposes)
         dbname:DB_NAME, // Exposing DB name (for debugging purposes)
       });}
