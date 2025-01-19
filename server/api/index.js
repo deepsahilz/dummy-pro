@@ -9,6 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 let db;
 const MONGO_URI = process.env.MONGO_URI;
+const DB_NAME = process.env.DB_NAME;
 
 // MongoDB connection
 MongoClient.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
