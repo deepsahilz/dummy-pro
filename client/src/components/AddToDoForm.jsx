@@ -13,11 +13,7 @@ const AddToDoForm = ({ setTodos }) => {
     try {
       // Add new to-do to backend
       const response = await axios.post(`${BASE_URL}/todos`, { title });
-
-      // Ensure prevTodos is an array before updating the state
-      // setTodos((prevTodos) =>
-      //   Array.isArray(prevTodos) ? [...prevTodos, response.data] : [response.data]
-      // );
+      console.log(response.data);
       setTodos((prevTodos) => {
         console.log("Previous todos:", prevTodos);
     
