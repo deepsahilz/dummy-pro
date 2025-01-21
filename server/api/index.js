@@ -7,20 +7,29 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-let db;
+// let db;
 const MONGO_URI = process.env.MONGO_URI;
 const DB_NAME = process.env.DB_NAME;
 
+const client = new MongoClient(MONGO_URI);
+let conn;
+try {
+  conn = await client.connect();
+} catch(e) {
+  console.error(e);
+}
+let db = conn.db(DB_NAME);
+
 // MongoDB connection
-MongoClient.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then((client) => {
-    console.log('Connected to MongoDB');
-    db = client.db(DB_NAME); // Set the database
-  })
-  .catch((err) => {
-    console.error('Failed to connect to MongoDB', err);
-    process.exit(1); // Exit the process if MongoDB connection fails
-  });
+// MongoClient.connect(MONGO_URI)
+//   .then((client) => {
+//     console.log('Connected to MongoDB');
+//     db = client.db(DB_NAME); // Set the database
+//   })
+//   .catch((err) => {
+//     console.error('Failed to connect to MongoDB', err);
+//     process.exit(1); // Exit the process if MongoDB connection fails
+//   });
 
 
   const ensureDbConnected = (req, res, next) => {
