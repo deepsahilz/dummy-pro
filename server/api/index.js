@@ -43,7 +43,8 @@ let db = conn.db(DB_NAME);
 
 // Middleware
 const corsOptions = {
-  origin: 'https://todopankaj.vercel.app', // Replace with your frontend domain
+  // origin:'http://localhost:5173',
+  origin: 'https://todopankaj.vercel.app', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type'],
 };

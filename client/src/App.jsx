@@ -37,7 +37,8 @@ const App = () => {
   // }
 
   return (
-    <div className="app-container font-nb">
+    <div className="max-w-[500px] appy  p-[20px] bg-white rounded-lg shadow-lg font-nb">
+
       <h1 className="text-4xl font-rejouice font-semibold mb-2">To Do Pankaj</h1>
       <AddToDoForm setTodos={setTodos} />
       {todos.length === 0 ? (
