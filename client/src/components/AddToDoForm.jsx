@@ -19,7 +19,7 @@ const AddToDoForm = ({ setTodos }) => {
     
         if (Array.isArray(prevTodos)) {
             console.log("Previous todos is an array. Adding new data to it.");
-            const updatedTodos = [...prevTodos, response.data.todo.title];
+            const updatedTodos = [...prevTodos, response.data.todo];
             console.log("Updated todos:", updatedTodos);
             return updatedTodos;
         } else {
