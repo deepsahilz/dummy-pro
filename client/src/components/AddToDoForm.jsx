@@ -15,9 +15,24 @@ const AddToDoForm = ({ setTodos }) => {
       const response = await axios.post(`${BASE_URL}/todos`, { title });
 
       // Ensure prevTodos is an array before updating the state
-      setTodos((prevTodos) =>
-        Array.isArray(prevTodos) ? [...prevTodos, response.data] : [response.data]
-      );
+      // setTodos((prevTodos) =>
+      //   Array.isArray(prevTodos) ? [...prevTodos, response.data] : [response.data]
+      // );
+      setTodos((prevTodos) => {
+        console.log("Previous todos:", prevTodos);
+    
+        if (Array.isArray(prevTodos)) {
+            console.log("Previous todos is an array. Adding new data to it.");
+            const updatedTodos = [...prevTodos, response.data];
+            console.log("Updated todos:", updatedTodos);
+            return updatedTodos;
+        } else {
+            console.log("Previous todos is not an array. Initializing with new data.");
+            const newTodos = [response.data];
+            console.log("New todos:", newTodos);
+            return newTodos;
+        }
+    });
 
       setTitle('');
     } catch (error) {
